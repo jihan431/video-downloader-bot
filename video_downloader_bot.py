@@ -57,6 +57,8 @@ def download_video(url, chat_id):
     """Download video menggunakan yt-dlp"""
     filename = f"{chat_id}_{uuid.uuid4().hex[:8]}"
     output_path = os.path.join(DOWNLOAD_DIR, filename)
+    # Cek apakah ada file cookies
+    cookies_file = "cookies.txt"
     
     ydl_opts = {
         'format': 'best[filesize<50M]/best',
@@ -68,19 +70,16 @@ def download_video(url, chat_id):
         'retries': 5,
         'merge_output_format': 'mp4',
         'geo_bypass': True,
-        'geo_bypass_country': 'ID',
-        'extractor_args': {
-            'tiktok': {
-                'api_hostname': 'api22-normal-c-useast2a.tiktokv.com',
-            }
-        },
         'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
-            'Referer': 'https://www.tiktok.com/',
+            'Accept-Language': 'en-US,en;q=0.9',
         }
     }
+    
+    # Tambahkan cookies jika ada
+    if os.path.exists(cookies_file):
+        ydl_opts['cookiefile'] = cookies_file
     
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
