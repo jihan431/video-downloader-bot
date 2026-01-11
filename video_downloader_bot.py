@@ -75,12 +75,20 @@ def download_video(url, chat_id):
         'no_warnings': True,
         'extract_flat': False,
         'socket_timeout': 30,
-        'retries': 3,
+        'retries': 5,
         'merge_output_format': 'mp4',
+        'geo_bypass': True,
+        'geo_bypass_country': 'ID',
+        'extractor_args': {
+            'tiktok': {
+                'api_hostname': 'api22-normal-c-useast2a.tiktokv.com',
+            }
+        },
         'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept-Language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Referer': 'https://www.tiktok.com/',
         }
     }
     
