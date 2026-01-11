@@ -1,6 +1,6 @@
 """
-🎬 Social Media Video Downloader Bot - Telegram
-Download video dari TikTok, Instagram, dan Facebook
+📸 Instagram & Facebook Video Downloader Bot - Telegram
+Download video dari Instagram dan Facebook
 
 Kirim link video, bot akan otomatis download dan kirim video-nya!
 """
@@ -28,11 +28,6 @@ os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 # Platform yang didukung
 SUPPORTED_PLATFORMS = {
-    'tiktok': {
-        'pattern': r'(tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)',
-        'emoji': '🎵',
-        'name': 'TikTok'
-    },
     'instagram': {
         'pattern': r'(instagram\.com|instagr\.am)',
         'emoji': '📸',
@@ -42,11 +37,6 @@ SUPPORTED_PLATFORMS = {
         'pattern': r'(facebook\.com|fb\.watch|fb\.com)',
         'emoji': '📘',
         'name': 'Facebook'
-    },
-    'threads': {
-        'pattern': r'threads\.net',
-        'emoji': '🧵',
-        'name': 'Threads'
     }
 }
 
@@ -146,15 +136,13 @@ def cleanup_file(file_path):
 @bot.message_handler(commands=['start'])
 def cmd_start(message):
     """Handle /start command dengan menu"""
-    text = "🎬 *Video Downloader Bot*\n\n"
-    text += "Selamat datang! Saya bisa download video dari berbagai platform sosial media.\n\n"
+    text = "📸 *Instagram & Facebook Video Downloader*\n\n"
+    text += "Selamat datang! Saya bisa download video dari Instagram dan Facebook.\n\n"
     text += "📌 *Cara Pakai:*\n"
     text += "_Kirim link video, saya akan download dan kirimkan!_\n\n"
     text += "📱 *Platform:*\n"
-    text += "• 🎵 TikTok\n"
-    text += "• 📸 Instagram\n"
-    text += "• 📘 Facebook\n"
-    text += "• 🧵 Threads\n\n"
+    text += "• 📸 Instagram (Reels, Post, Stories)\n"
+    text += "• 📘 Facebook (Video, Reels)\n\n"
     text += "💡 Ketik /help untuk bantuan"
     
     # Inline keyboard menu
@@ -178,7 +166,7 @@ def cmd_help(message):
     text += "• /about - Tentang bot\n"
     text += "• /clear - Bersihkan cache\n\n"
     text += "*Cara Download:*\n"
-    text += "1. Buka TikTok/Instagram/Facebook\n"
+    text += "1. Buka Instagram/Facebook\n"
     text += "2. Copy link video\n"
     text += "3. Kirim link ke bot\n"
     text += "4. Tunggu video dikirim!\n\n"
@@ -190,9 +178,6 @@ def cmd_help(message):
 def cmd_platforms(message):
     """Handle /platforms command"""
     text = "📱 *Platform yang Didukung*\n\n"
-    text += "🎵 *TikTok*\n"
-    text += "   • Video biasa\n"
-    text += "   • Video tanpa watermark\n\n"
     text += "📸 *Instagram*\n"
     text += "   • Reels\n"
     text += "   • Post video\n"
@@ -200,9 +185,7 @@ def cmd_platforms(message):
     text += "📘 *Facebook*\n"
     text += "   • Video post\n"
     text += "   • Reels\n"
-    text += "   • fb.watch links\n\n"
-    text += "🧵 *Threads*\n"
-    text += "   • Video post"
+    text += "   • fb.watch links"
     
     bot.reply_to(message, text, parse_mode='Markdown')
 
@@ -210,9 +193,9 @@ def cmd_platforms(message):
 def cmd_about(message):
     """Handle /about command"""
     text = "ℹ️ *About Bot*\n\n"
-    text += "🎬 *Video Downloader Bot*\n"
+    text += "📸 *Instagram & Facebook Video Downloader*\n"
     text += "━━━━━━━━━━━━━━━\n\n"
-    text += "Bot ini membantu kamu download video dari berbagai platform sosial media dengan mudah.\n\n"
+    text += "Bot ini membantu kamu download video dari Instagram dan Facebook dengan mudah.\n\n"
     text += "🔧 *Tech:* Python + yt-dlp\n"
     text += "📦 *Max Size:* 50MB\n"
     text += f"📅 *Date:* {datetime.now().strftime('%Y')}\n\n"
@@ -232,19 +215,18 @@ def callback_handler(call):
     """Handle inline keyboard callbacks"""
     if call.data == "platforms":
         text = "📱 *Platform yang Didukung*\n\n"
-        text += "🎵 TikTok • 📸 Instagram\n"
-        text += "📘 Facebook • 🧵 Threads"
+        text += "📸 Instagram • 📘 Facebook"
         bot.answer_callback_query(call.id)
         bot.send_message(call.message.chat.id, text, parse_mode='Markdown')
     
     elif call.data == "help":
         text = "❓ *Quick Help*\n\n"
-        text += "Kirim link video dari TikTok/Instagram/Facebook, bot akan otomatis download!"
+        text += "Kirim link video dari Instagram/Facebook, bot akan otomatis download!"
         bot.answer_callback_query(call.id)
         bot.send_message(call.message.chat.id, text, parse_mode='Markdown')
     
     elif call.data == "about":
-        text = "🎬 Video Downloader Bot\n\nDownload video dari sosmed dengan mudah!"
+        text = "📸 IG & FB Downloader\n\nDownload video dengan mudah!"
         bot.answer_callback_query(call.id, text, show_alert=True)
 
 @bot.message_handler(func=lambda message: True)
@@ -259,7 +241,7 @@ def handle_message(message):
         bot.reply_to(
             message, 
             "❌ Tidak ada link yang valid.\n\n"
-            "Kirim link dari TikTok, Instagram, atau Facebook."
+            "Kirim link dari Instagram atau Facebook."
         )
         return
     
@@ -271,10 +253,8 @@ def handle_message(message):
             message,
             "❌ Platform tidak didukung.\n\n"
             "Kirim link dari:\n"
-            "• TikTok\n"
             "• Instagram\n"
-            "• Facebook\n"
-            "• Threads"
+            "• Facebook"
         )
         return
     
@@ -395,9 +375,9 @@ def handle_message(message):
 def main():
     """Main function"""
     print("=" * 45)
-    print("🎬 Video Downloader Bot")
+    print("📸 Instagram & Facebook Video Downloader")
     print("=" * 45)
-    print("📱 Supported: TikTok, Instagram, Facebook")
+    print("📱 Supported: Instagram, Facebook")
     print("=" * 45)
     print("✅ Bot running... Press Ctrl+C to stop")
     print()
