@@ -289,16 +289,22 @@ def handle_message(message):
             error_msg = "Video privat atau memerlukan login"
         elif 'not available' in error_msg.lower():
             error_msg = "Video tidak tersedia"
+        elif 'Unsupported URL' in error_msg:
+            error_msg = "Link tidak valid atau video tidak ditemukan"
         else:
             error_msg = error_msg[:100]
+        
+        # Escape Markdown special characters
+        for char in ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']:
+            error_msg = error_msg.replace(char, f'\\{char}')
             
         bot.edit_message_text(
-            f"❌ *Gagal download!*\n\n"
+            f"❌ *Gagal download\\!*\n\n"
             f"Error: {error_msg}\n\n"
-            f"_Pastikan link valid dan video bisa diakses publik._",
+            f"_Pastikan link valid dan video bisa diakses publik\\._",
             message.chat.id,
             status_msg.message_id,
-            parse_mode='Markdown'
+            parse_mode='MarkdownV2'
         )
         return
     
