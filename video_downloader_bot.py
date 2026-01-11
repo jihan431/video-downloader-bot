@@ -13,7 +13,9 @@ import uuid
 from datetime import datetime
 
 # ============ KONFIGURASI ============
-BOT_TOKEN = os.getenv("BOT_TOKEN", "8557250496:AAEgZGY1duL2Ehr7V4fq0rweA3Uoeecr2xk")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+if not BOT_TOKEN:
+    raise ValueError("❌ BOT_TOKEN tidak ditemukan! Set di environment variable.")
 DOWNLOAD_DIR = "downloads"
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB (Telegram limit)
 
